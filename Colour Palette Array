@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Block Test</title>
+    <style>
+      #block-views-block-home-blocks-block-1 {
+        height: 500px;
+      }
+      #block-views-block-home-blocks-block-1 li.grid {
+        color: #fff;
+        padding: 25px;
+        box-sizing: border-box;
+        min-height: 400px;
+        background-color: #000;
+        border: 1px solid #fff;
+        width: 400px;
+        float: left;
+      }
+      .one {
+        background-color: #333 !important;
+      }
+      .two {
+        background-color: #999 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="holder">
+      <div id="block-views-block-home-blocks-block-1">
+        <li class="grid">block</li>
+        <li class="grid">block</li>
+        <li class="grid">block</li>
+        <li class="grid">block</li>
+        <li class="grid">block</li>
+        <li class="grid">block</li>
+        <li class="grid">block</li>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script>
+      var items = ["#E82678", "#61366E", "#585D72", "#8D1B60"];
+      var index = 0;
+      var color;
+      $(".grid").each(function () {
+        if (index == items.length) index = 0;
+        color = items[index];
+        $(this).css("background", color);
+        index++;
+      });
+    </script>
+  </body>
+</html>
