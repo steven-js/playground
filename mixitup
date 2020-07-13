@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MixMe Test</title>
+    <style>
+      body {
+        background: #68b8c4;
+      }
+
+      body,
+      button {
+        font-family: "Helvetica Neue", arial, sans-serif;
+        color: white;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /**
+ * Form & Checkbox Styles
+ */
+
+      h4 {
+        font-weight: 700;
+        margin-bottom: 0.5em;
+      }
+
+      label {
+        font-weight: 300;
+      }
+
+      input[type="text"] {
+        font-family: "helvetica";
+        font-size: 14px;
+        border: 1px solid transparent;
+        padding: 0.5em;
+        border-radius: 2px;
+      }
+
+      input[type="text"]:focus {
+        outline: 0 none;
+        border-color: #68b8c4;
+      }
+
+      button {
+        display: inline-block;
+        vertical-align: top;
+        padding: 0.4em 0.8em;
+        margin: 0;
+        background: #68b8c4;
+        border: 0;
+        color: #333;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:focus {
+        outline: 0 none;
+      }
+
+      .controls {
+        background: #333;
+        padding: 2%;
+      }
+
+      fieldset {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 1em 0 0;
+        background: #666;
+        padding: 0.5em;
+        border-radius: 3px;
+      }
+
+      .checkbox {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 8px;
+      }
+
+      .checkbox input[type="checkbox"] {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        margin: 0;
+        opacity: 0;
+        z-index: 1;
+      }
+
+      .checkbox label {
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        padding-left: 1.5em;
+      }
+
+      .checkbox label:before,
+      .checkbox label:after {
+        content: "";
+        display: block;
+        position: absolute;
+      }
+
+      .checkbox label:before {
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        background: #ddd;
+        border-radius: 3px;
+      }
+
+      .checkbox label:after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background: #68b8c4;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .checkbox input:checked ~ label:after {
+        opacity: 1;
+      }
+
+      .checkbox input:focus ~ label:before {
+        background: #eee;
+      }
+
+      /**
+ * Content/Target Styles
+ */
+
+      .content {
+        padding: 2%;
+        min-height: 400px;
+        text-align: justify;
+        position: relative;
+        color: #000;
+      }
+
+      .content .mix,
+      .content .gap {
+        width: 100px;
+        display: inline-block;
+        margin: 0 5%;
+      }
+
+      .content .mix {
+        width: 100px;
+        height: 100px;
+        margin: 5%;
+        background: white;
+        display: none;
+      }
+
+      .content .mix.green {
+        background: #a6e6a7;
+      }
+
+      .content .mix.blue {
+        background: #6bd2e8;
+      }
+
+      .content .mix.circle {
+        border-radius: 999px;
+      }
+
+      .content .mix.triangle {
+        width: 0;
+        height: 0;
+        border: 50px solid transparent;
+        border-top-color: #68b8c4;
+        border-left-color: #68b8c4;
+      }
+
+      .content .mix.sm {
+        width: 50px;
+        height: 50px;
+      }
+
+      /**
+ * Fail message styles
+ */
+
+      .fail-message {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+
+        -webkit-transition: 150ms;
+        -moz-transition: 150ms;
+        transition: 150ms;
+      }
+
+      .fail-message:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+      }
+
+      .fail-message span {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .fail .fail-message {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="controls" id="Filters">
+      <!-- We can add an unlimited number of "filter groups" using the following format: -->
+
+      <fieldset class="filter-group checkboxes">
+        <h4>Filter by topic:</h4>
+        <div class="checkbox">
+          <input type="checkbox" value=".virus-tracking" />
+          <label>Virus Tracking</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" value=".personalised-therapies" />
+          <label>Personalised Therapies</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" value=".medical-imaging" />
+          <label>Medical Imaging</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" value=".diagnosis" />
+          <label>Diagnosis</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group search">
+        <h4>Search</h4>
+        <input type="text" placeholder="Search ..." />
+      </fieldset>
+
+      <button id="Reset">Clear Filters</button>
+    </form>
+
+    <div id="block-vani-content">
+      <div class="fail-message">
+        <span>No items were found matching the selected filters</span>
+      </div>
+
+      <div class="block content">
+        <div class="mix medical-imaging">Medical Imaging</div>
+        <div class="mix virus-tracking">Virus Tracking</div>
+        <div class="mix personalised-therapies">Personalised Therapies</div>
+        <div class="mix medical-imaging">Medical Imaging</div>
+        <div class="mix virus-tracking">Virus Tracking</div>
+        <div class="mix personalised-therapies">Personalised Therapies</div>
+        <div class="mix diagnosis medical-imaging">
+          Medical Imaging & Diagnosis
+        </div>
+        <div class="mix virus-tracking">Virus Tracking</div>
+        <div class="mix personalised-therapies">Personalised Therapies</div>
+
+        <div class="gap"></div>
+        <div class="gap"></div>
+        <div class="gap"></div>
+        <div class="gap"></div>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/2.1.11/jquery.mixitup.js"></script>
+
+  <script>
+    // To keep our code clean and modular, all custom functionality will be contained inside a single object literal called "multiFilter".
+
+    var multiFilter = {
+      // Declare any variables we will need as properties of the object
+
+      $filterGroups: null,
+      $filterUi: null,
+      $reset: null,
+      groups: [],
+      outputArray: [],
+      outputString: "",
+
+      // The "init" method will run on document ready and cache any jQuery objects we will need.
+
+      init: function () {
+        var self = this; // As a best practice, in each method we will asign "this" to the variable "self" so that it remains scope-agnostic. We will use it to refer to the parent "checkboxFilter" object so that we can share methods and properties between all parts of the object.
+
+        self.$filterUi = $("#Filters");
+        self.$filterGroups = $(".filter-group");
+        self.$reset = $("#Reset");
+        self.$content = $("#block-vani-content");
+
+        self.$filterGroups.each(function () {
+          self.groups.push({
+            $inputs: $(this).find("input"),
+            active: [],
+            tracker: false,
+          });
+        });
+
+        self.bindHandlers();
+      },
+
+      // The "bindHandlers" method will listen for whenever a form value changes.
+
+      bindHandlers: function () {
+        var self = this,
+          typingDelay = 300,
+          typingTimeout = -1,
+          resetTimer = function () {
+            clearTimeout(typingTimeout);
+
+            typingTimeout = setTimeout(function () {
+              self.parseFilters();
+            }, typingDelay);
+          };
+
+        self.$filterGroups.filter(".checkboxes").on("change", function () {
+          self.parseFilters();
+        });
+
+        self.$filterGroups.filter(".search").on("keyup change", resetTimer);
+
+        self.$reset.on("click", function (e) {
+          e.preventDefault();
+          self.$filterUi[0].reset();
+          self.$filterUi.find('input[type="text"]').val("");
+          self.parseFilters();
+        });
+      },
+
+      // The parseFilters method checks which filters are active in each group:
+
+      parseFilters: function () {
+        var self = this;
+
+        // loop through each filter group and add active filters to arrays
+
+        for (var i = 0, group; (group = self.groups[i]); i++) {
+          group.active = []; // reset arrays
+          group.$inputs.each(function () {
+            var searchTerm = "",
+              $input = $(this),
+              minimumLength = 3;
+
+            if ($input.is(":checked")) {
+              group.active.push(this.value);
+            }
+
+            if (
+              $input.is('[type="text"]') &&
+              this.value.length >= minimumLength
+            ) {
+              searchTerm = this.value.trim().toLowerCase().replace(" ", "-");
+
+              group.active[0] = '[class*="' + searchTerm + '"]';
+            }
+          });
+          group.active.length && (group.tracker = 0);
+        }
+
+        self.concatenate();
+      },
+
+      // The "concatenate" method will crawl through each group, concatenating filters as desired:
+
+      concatenate: function () {
+        var self = this,
+          cache = "",
+          crawled = false,
+          checkTrackers = function () {
+            var done = 0;
+
+            for (var i = 0, group; (group = self.groups[i]); i++) {
+              group.tracker === false && done++;
+            }
+
+            return done < self.groups.length;
+          },
+          crawl = function () {
+            for (var i = 0, group; (group = self.groups[i]); i++) {
+              group.active[group.tracker] &&
+                (cache += group.active[group.tracker]);
+
+              if (i === self.groups.length - 1) {
+                self.outputArray.push(cache);
+                cache = "";
+                updateTrackers();
+              }
+            }
+          },
+          updateTrackers = function () {
+            for (var i = self.groups.length - 1; i > -1; i--) {
+              var group = self.groups[i];
+
+              if (group.active[group.tracker + 1]) {
+                group.tracker++;
+                break;
+              } else if (i > 0) {
+                group.tracker && (group.tracker = 0);
+              } else {
+                crawled = true;
+              }
+            }
+          };
+
+        self.outputArray = []; // reset output array
+
+        do {
+          crawl();
+        } while (!crawled && checkTrackers());
+
+        self.outputString = self.outputArray.join();
+
+        // If the output string is empty, show all rather than none:
+
+        !self.outputString.length && (self.outputString = "all");
+
+        console.log(self.outputString);
+
+        // ^ we can check the console here to take a look at the filter string that is produced
+
+        // Send the output string to MixItUp via the 'filter' method:
+
+        if (self.$content.mixItUp("isLoaded")) {
+          self.$content.mixItUp("filter", self.outputString);
+        }
+      },
+    };
+
+    // On document ready, initialise our code.
+
+    $(function () {
+      // Initialize multiFilter code
+
+      multiFilter.init();
+
+      // Instantiate MixItUp
+
+      $("#block-vani-content").mixItUp({
+        controls: {
+          enable: false, // we won't be needing these
+        },
+        animation: {
+          easing: "cubic-bezier(0.86, 0, 0.07, 1)",
+          queueLimit: 3,
+          duration: 600,
+        },
+      });
+    });
+  </script>
+</html>
