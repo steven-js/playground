@@ -1,0 +1,7 @@
+var mydiv = document.getElementById("blazy-views-news-block-1-1").lastElementChild;
+var aTag = document.createElement('a');
+aTag.setAttribute('href',"/news-and-events/news");
+aTag.textContent= "MORE NEWS";
+mydiv.textContent = `MORE NEWS`;
+mydiv.appendChild(aTag);
+mydiv.classList.add("more-news");
