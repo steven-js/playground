@@ -4,12 +4,18 @@ const tabPanels = Array.from(tabs.querySelectorAll('.tabpanel'));
 var att = document.createAttribute("aria-selected");
 var firstButton = tabButtons.item(0);
 var i;
+att.value = "true";
+firstButton.setAttributeNode(att);
 
-console.log(firstButton);
+// console.log(firstButton);
 
+// add hidden to all but first panel
+    for (k = 1; k < tabPanels.length; k++) {
+        tabPanels[k].classList.add('hidden');
+    }
 
 // add aria-selected="false" attribute to tabButtons
-for (i = 0; i < tabButtons.length; i++) {
+for (i = 1; i < tabButtons.length; i++) {
     var att = document.createAttribute("aria-selected");
     att.value = "false";
     tabButtons[i].setAttributeNode(att);
@@ -20,7 +26,6 @@ for (j = 0; j < tabButtons.length; j++) {
 
 // hide all tab panels
 function handleTabClick(event) {
-    // if 
     tabPanels.forEach(panel => {
       panel.classList.add('hidden');
     });
@@ -35,7 +40,7 @@ function handleTabClick(event) {
 
   // find the associated tabPanel and show it!
   const classToMatch = event.target.className.split(" ")[0]; //0 to retrieve first class
-  console.log(classToMatch);
+//   console.log(classToMatch);
 
   //Aaaaaaaaaaaaaargh!
 const tabPanel = tabPanels.find(
@@ -49,5 +54,5 @@ tabButtons.forEach(button => button.addEventListener('click', handleTabClick));
 
 
 // console.log('tabButton =', tabButtons);
-console.log('tabPanels =', tabPanels);
+// console.log('tabPanels =', tabPanels);
 // console.log('att =', att);
